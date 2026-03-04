@@ -12,7 +12,7 @@ public class CarLeaveEvent extends Event {
 	@Override
 	public void run(SimState state) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
