@@ -7,7 +7,7 @@ package labb6;
 public class Test {
 	
 	public static void main(String[] args) {
-		EventQueue events = new EventQueue();
+		final EventQueue events = new EventQueue();
 
 		StartEvent start = new StartEvent(0.0);
 		events.add(start);
