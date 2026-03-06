@@ -46,7 +46,12 @@ public class CarWashState extends SimState {
 		return slowRandom.next();
 	}
 
-	private void createLeave(int id) {
+	/**
+	 * Creates a leave event for next car in queue if space exists in a washer
+	 * 
+	 * @return false if washers where full
+	 */
+	private boolean createLeave() {
 
 		double time;
 		WashType type;
@@ -58,43 +63,51 @@ public class CarWashState extends SimState {
 			time = getSlowTime();
 			type = WashType.SLOW;
 		} else {
-			return;
+			return false;
 		}
-		
+
+		int id = carQueue.poll();
 		reduceFree(type);
 
 		CarLeaveEvent leave = new CarLeaveEvent(time, id, type);
 		getEventQueue().add(leave);
-	}
-
-	/**
-	 * Adds a car with id to carQueue if there is space
-	 * 
-	 * @param id The cars id
-	 * @return Returns false if queue was full (> maxQueueSize)
-	 */
-	private boolean addToCarQueue(int id) {
-		if (getCarQueueSize() >= maxQueueSize) {
-			addRejected();
-			return false;
-		}
-		carQueue.add(id);
 		return true;
 	}
 
-	public int getFastFree() {
-		return fastFree;
+	/**
+	 * Washes a car if there's any free washers else adds a car with id to carQueue
+	 * if there is space. Triggered by {@link CarArriveEvent}.
+	 * 
+	 * @param id The cars id
+	 */
+	public void carArrived(int id) {
+		// try adding car to wash directly, if successful don't add to queue
+		if (createLeave()) {
+			return;
+		}
+
+		if (getCarQueueSize() >= maxQueueSize) {
+			addRejected();
+			return;
+		}
+		carQueue.add(id);
 	}
 
+	/**
+	 * Triggered by CarLeaveEvent to mark wash as free for next car. Starts washing
+	 * car if one is cueing.
+	 * 
+	 * @param type Type of the wash (FAST/SLOW)
+	 */
 	public void addFree(WashType type) {
 		if (type == WashType.FAST) {
 			fastFree++;
-		} else if(type == WashType.SLOW) {
+		} else if (type == WashType.SLOW) {
 			slowFree--;
 		}
-		
+
 		if (carQueue.size() > 0) {
-			createLeave(carQueue.poll());
+			createLeave();
 		}
 	}
 
@@ -106,6 +119,27 @@ public class CarWashState extends SimState {
 		}
 	}
 
+	private void addIdleTime(double time) {
+		idleTime += time;
+	}
+
+	private void addQueueTime(double time) {
+		queueTime += time;
+	}
+
+	private void addRejected() {
+		rejected++;
+	}
+
+	// Getters
+	public int getCarQueueSize() {
+		return carQueue.size();
+	}
+
+	public int getFastFree() {
+		return fastFree;
+	}
+
 	public int getSlowFree() {
 		return slowFree;
 	}
@@ -114,27 +148,16 @@ public class CarWashState extends SimState {
 		return idleTime;
 	}
 
-	private void addIdleTime(double time) {
-		idleTime += time;
-	}
-
 	public double getQueueTime() {
 		return queueTime;
-	}
-
-	private void addQueueTime(double time) {
-		queueTime += time;
 	}
 
 	public int getRejected() {
 		return rejected;
 	}
-
-	private void addRejected() {
-		rejected++;
-	}
-
-	public int getCarQueueSize() {
-		return carQueue.size();
+	
+	// Test main
+	public static void main(String[] args) {
+		
 	}
 }

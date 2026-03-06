@@ -11,8 +11,10 @@ public class CarArriveEvent extends Event {
 
 	@Override
 	public void run(SimState state) {
-		// TODO Auto-generated method stub
 
+		if (state instanceof CarWashState washState) {
+			washState.carArrived(id);
+		}
 		
 		// Last thing to run
 		state.eventComplete(this.getTime());
