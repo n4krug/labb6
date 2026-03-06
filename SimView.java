@@ -25,17 +25,24 @@ public class SimView implements Observer{
 	public void update(Observable o, Object arg) {
 		
 		Event event = simState.getEventQueue().peek();
+	
+		if (event == null) {
+			return;
+		}
 		
 		sb.replace(0, sb.length(), "");
 		
 		if(event instanceof StartEvent) {
-			sb.append("----------------------------------------\nTime   Event\n");
+			sb.append("----------------------------------------\n Time    Event\n");
 		}
 		
-		formatter.format("%f   %s", event.getTime(), event.toString());
+		String formattedTime = String.format("%1$6s", String.format("%.2f", event.getTime()));
+		String formattedEvent = String.format("%1$-10s", event);
+		
+		formatter.format("%s   %s", formattedTime, formattedEvent);
 		
 		if(event instanceof StopEvent) {
-			sb.append("\n---------------------------------");
+			sb.append("\n----------------------------------------");
 		}
 		
 		System.out.println(sb.toString());

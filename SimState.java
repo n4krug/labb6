@@ -5,7 +5,7 @@ import java.util.Observable;
 public class SimState extends Observable {
 
 	private double currentTime = 0.0;
-	private boolean isRunning = false;
+	private boolean isRunning = true;
 	final private EventQueue events;
 
 	public SimState(EventQueue queue, double maxRunTime) {

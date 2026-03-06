@@ -10,7 +10,7 @@ public class StopEvent extends Event {
 	public void run(SimState state) {
 		// TODO Auto-generated method stub
 
-		
+		state.setIsRunning(false);
 
 		// Last thing to run
 		state.eventComplete(this.getTime());
