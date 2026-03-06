@@ -3,6 +3,8 @@ package labb6;
 import java.util.Observable;
 
 public class SimState extends Observable {
+	
+	public enum WashType {FAST, SLOW}
 
 	private double currentTime = 0.0;
 	private boolean isRunning = true;
