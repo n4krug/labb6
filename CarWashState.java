@@ -105,7 +105,7 @@ public class CarWashState extends SimState {
 		if (type == WashType.FAST) {
 			fastFree++;
 		} else if (type == WashType.SLOW) {
-			slowFree--;
+			slowFree++;
 		}
 
 		if (carQueue.size() > 0) {
@@ -167,7 +167,7 @@ public class CarWashState extends SimState {
 		
 		CarWashState state = new CarWashState(queue, factory, 2, 2, 5, new UniformRandomStream(2.8,4.6,1234), new UniformRandomStream(3.5,6.7,1234), 15.0);
 	
-		SimView view = new SimView(state);
+		CarWashView view = new CarWashView(state);
 		
 		Simulator test = new Simulator(state, view);
 		
