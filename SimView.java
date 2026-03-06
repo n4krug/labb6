@@ -48,6 +48,18 @@ public class SimView implements Observer{
 		System.out.println(sb.toString());
 		
 	}
+	
+	protected SimState getSimState() {
+		return simState;
+	}
+	
+	protected StringBuilder getStringBuilder() {
+		return sb;
+	}
+	
+	protected Formatter getFormatter() {
+		return formatter;
+	}
 
 	
 }
