@@ -16,11 +16,10 @@ public class Simulator {
 		
 		final EventQueue queue = state.getEventQueue();
 		
-		state.eventComplete(0);
-		
 		while (!queue.isEmpty() && state.getIsRunning()) {
-			Event event = queue.poll();
+			Event event = queue.peek();
 			event.run(state);
+			queue.poll();
 		}
 	}
 	

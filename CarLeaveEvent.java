@@ -12,14 +12,12 @@ public class CarLeaveEvent extends Event {
 	}
 
 	@Override
-	public void run(SimState state) {
+	public void runEvent(SimState state) {
 		// TODO Auto-generated method stub
 	
 		if (state instanceof CarWashState washState) {
-			washState.addFree(type);
+			washState.addFree(type, getTime());
 		}
-		// Last thing to run
-		state.eventComplete(this.getTime());
 	}
 
 	@Override

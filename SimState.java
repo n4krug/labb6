@@ -3,8 +3,10 @@ package labb6;
 import java.util.Observable;
 
 public class SimState extends Observable {
-	
-	public enum WashType {FAST, SLOW}
+
+	public enum WashType {
+		FAST, SLOW
+	}
 
 	private double currentTime = 0.0;
 	private boolean isRunning = true;
@@ -15,27 +17,30 @@ public class SimState extends Observable {
 		events.add(new StartEvent(0.0));
 		events.add(new StopEvent(maxRunTime));
 	}
-	
+
 	public EventQueue getEventQueue() {
 		return events;
 	}
-	
+
 	public void setIsRunning(boolean state) {
 		isRunning = state;
 	}
-	
+
 	public double getTime() {
 		return currentTime;
 	}
-	
+
 	public boolean getIsRunning() {
 		return isRunning;
 	}
-	
+
 	public void eventComplete(double time) {
 		this.currentTime = time;
+	}
+
+	public void eventStarted(double time) {
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 }

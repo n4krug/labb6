@@ -10,14 +10,10 @@ public class CarArriveEvent extends Event {
 	}
 
 	@Override
-	public void run(SimState state) {
-
+	public void runEvent(SimState state) {
 		if (state instanceof CarWashState washState) {
-			washState.carArrived(id);
+			washState.carArrived(id, getTime());
 		}
-		
-		// Last thing to run
-		state.eventComplete(this.getTime());
 	}
 
 	@Override

@@ -8,7 +8,15 @@ public abstract class Event implements Comparable<Event> {
 		this.time = time;
 	}
 
-	abstract public void run(SimState state);
+	public void run(SimState state) {
+		state.eventStarted(time);
+		
+		runEvent(state);
+		
+		state.eventComplete(time);
+	}
+	
+	abstract protected void runEvent(SimState state);
 
 	@Override
 	public int compareTo(Event arg0) {

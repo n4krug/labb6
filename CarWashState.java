@@ -29,16 +29,16 @@ public class CarWashState extends SimState {
 	/**
 	 * Updates idle and queue time and triggers super.eventComplete(double)
 	 */
-	public void eventComplete(double time) {
-		if (carQueue.size() > 0) {
-			addQueueTime(time - getTime());
+	public void eventStarted(double time) {
+		if (getCarQueueSize() > 0) {
+			addQueueTime((time - getTime()) * getCarQueueSize() );
 		}
 
 		if (fastFree > 0 || slowFree > 0) {
-			addIdleTime(time - getTime());
+			addIdleTime((time - getTime()) * (getFastFree() + getSlowFree()));
 		}
-
-		super.eventComplete(time);
+		
+		super.eventStarted(time);
 	}
 
 	private double getFastTime() {
@@ -54,27 +54,28 @@ public class CarWashState extends SimState {
 	 * 
 	 * @return false if washers where full
 	 */
-	private boolean enterWasher() {
+	private boolean enterWasher(double time) {
 
-		double time;
+		double leaveTime;
 		WashType type;
 
 		if (getFastFree() > 0) {
-			time = getFastTime();
+			leaveTime = getFastTime();
 			type = WashType.FAST;
 		} else if (getSlowFree() > 0) {
-			time = getSlowTime();
+			leaveTime = getSlowTime();
 			type = WashType.SLOW;
 		} else {
 			return false;
 		}
+		
+		leaveTime += time;
 
 		int id = carQueue.poll();
 		reduceFree(type);
 
-		CarLeaveEvent leave = new CarLeaveEvent(time, id, type);
+		CarLeaveEvent leave = new CarLeaveEvent(leaveTime, id, type);
 		getEventQueue().add(leave);
-//		System.out.println(getEventQueue());
 		return true;
 	}
 
@@ -84,14 +85,14 @@ public class CarWashState extends SimState {
 	 * 
 	 * @param id The cars id
 	 */
-	public void carArrived(int id) {
+	public void carArrived(int id, double time) {
 		if (getCarQueueSize() >= maxQueueSize) {
 			addRejected();
 			return;
 		}
 		carQueue.add(id);
 		
-		enterWasher(); // Try putting first car in washer (does nothing if no free washer)
+		enterWasher(time); // Try putting first car in washer (does nothing if no free washer)
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class CarWashState extends SimState {
 	 * 
 	 * @param type Type of the wash (FAST/SLOW)
 	 */
-	public void addFree(WashType type) {
+	public void addFree(WashType type, double time) {
 		if (type == WashType.FAST) {
 			fastFree++;
 		} else if (type == WashType.SLOW) {
@@ -108,7 +109,7 @@ public class CarWashState extends SimState {
 		}
 
 		if (carQueue.size() > 0) {
-			enterWasher();
+			enterWasher(time);
 		}
 	}
 
@@ -171,5 +172,10 @@ public class CarWashState extends SimState {
 		Simulator test = new Simulator(state, view);
 		
 		test.run();
+		
+		System.out.println(state.getQueueTime());
+		System.out.println(state.getIdleTime());
+		System.out.println(state.getCarQueueSize());
+		System.out.println(state.getRejected());
 	}
 }

@@ -7,13 +7,8 @@ public class StopEvent extends Event {
 	}
 
 	@Override
-	public void run(SimState state) {
-		// TODO Auto-generated method stub
-
+	public void runEvent(SimState state) {
 		state.setIsRunning(false);
-
-		// Last thing to run
-		state.eventComplete(this.getTime());
 	}
 
 	@Override
