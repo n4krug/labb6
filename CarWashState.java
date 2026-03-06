@@ -15,6 +15,9 @@ public class CarWashState extends SimState {
 	public CarWashState(EventQueue queue, CarFactory factory, int numFast, int numSlow, int maxQueueSize,
 			UniformRandomStream fastWashTime, UniformRandomStream slowWashTime, double maxRunTime) {
 		super(queue, maxRunTime);
+		
+		fastFree = numFast;
+		slowFree = numSlow;
 
 		this.maxQueueSize = maxQueueSize;
 		fastRandom = fastWashTime;
@@ -51,7 +54,7 @@ public class CarWashState extends SimState {
 	 * 
 	 * @return false if washers where full
 	 */
-	private boolean createLeave() {
+	private boolean enterWasher() {
 
 		double time;
 		WashType type;
@@ -71,6 +74,7 @@ public class CarWashState extends SimState {
 
 		CarLeaveEvent leave = new CarLeaveEvent(time, id, type);
 		getEventQueue().add(leave);
+//		System.out.println(getEventQueue());
 		return true;
 	}
 
@@ -81,16 +85,13 @@ public class CarWashState extends SimState {
 	 * @param id The cars id
 	 */
 	public void carArrived(int id) {
-		// try adding car to wash directly, if successful don't add to queue
-		if (createLeave()) {
-			return;
-		}
-
 		if (getCarQueueSize() >= maxQueueSize) {
 			addRejected();
 			return;
 		}
 		carQueue.add(id);
+		
+		enterWasher(); // Try putting first car in washer (does nothing if no free washer)
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class CarWashState extends SimState {
 		}
 
 		if (carQueue.size() > 0) {
-			createLeave();
+			enterWasher();
 		}
 	}
 
@@ -159,5 +160,16 @@ public class CarWashState extends SimState {
 	// Test main
 	public static void main(String[] args) {
 		
+		EventQueue queue = new EventQueue();
+		
+		CarFactory factory = new CarFactory(15, new ExponentialRandomStream(2, 1234));
+		
+		CarWashState state = new CarWashState(queue, factory, 2, 2, 5, new UniformRandomStream(2.8,4.6,1234), new UniformRandomStream(3.5,6.7,1234), 15.0);
+	
+		SimView view = new SimView(state);
+		
+		Simulator test = new Simulator(state, view);
+		
+		test.run();
 	}
 }
