@@ -1,5 +1,8 @@
 package labb6;
 
+/**
+ * Event triggered when a car arrives to the carwash
+ */
 public class CarArriveEvent extends Event {
 
 	final private int id;
