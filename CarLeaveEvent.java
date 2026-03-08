@@ -15,7 +15,7 @@ public class CarLeaveEvent extends CarEvent {
 	@Override
 	public void runEvent(SimState state) {
 		if (state instanceof CarWashState washState) {
-			washState.addFree(type, getTime());
+			washState.carLeft(type, getTime());
 		}
 	}
 

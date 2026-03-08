@@ -7,23 +7,20 @@ package labb6;
 public class Test {
 	
 	public static void main(String[] args) {
-		final EventQueue events = new EventQueue();
+		EventQueue queue = new EventQueue();
 
-		StartEvent start = new StartEvent(0.0);
-		events.add(start);
+		CarFactory factory = new CarFactory(15, new ExponentialRandomStream(2, 1234));
+
+		final int seed = 1234;
 		
-		StopEvent stop = new StopEvent(15.0);
-		events.add(stop);
-		
-		CarArriveEvent arrive1 = new CarArriveEvent(10.0, 0);
-		events.add(arrive1);
-		
-		System.out.println(events.toString());
-		
-		while (events.size() > 0) {
-			Event event = events.poll();
-			System.out.println("(" + event + ", " + event.getTime() + ")");
-		}
+		CarWashState state = new CarWashState(queue, factory, 2, 2, 5, new UniformRandomStream(2.8, 4.6, seed),
+				new UniformRandomStream(3.5, 6.7, seed), 15.0);
+
+		CarWashView view = new CarWashView(seed, factory);
+
+		Simulator test = new Simulator(state, view);
+
+		test.run();
 	}
 
 }

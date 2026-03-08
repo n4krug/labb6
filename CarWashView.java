@@ -10,20 +10,29 @@ public class CarWashView extends SimView {
 	
 	private int lastCar;
 
-	public CarWashView(CarWashState carState, int seed, CarFactory carFactory) {
-		super(carState);
+	/**
+	 * Crates a view that monitors and logs events and status for Car Wash simulation
+	 * 
+	 * @param carState		{@link CarWashState} for the viewer to observe
+	 * @param seed			the seed used in random streams
+	 * @param carFactory	{@link CarFactory} used to get lambda for output
+	 */
+	public CarWashView(int seed, CarFactory carFactory) {
+		super();
 
 		this.seed = seed;
 		this.carFactory = carFactory;
-
-		printStartSummary();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 
-		Event event = super.getSimState().getEventQueue().peek();
-		CarWashState carState = (CarWashState) super.getSimState();
+		if (! (o instanceof CarWashState)) {
+			return;
+		}
+		CarWashState carState = (CarWashState) o;
+		
+		Event event = carState.getEventQueue().peek();
 		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
 		if (event == null) {
@@ -34,16 +43,16 @@ public class CarWashView extends SimView {
 
 		String formattedTime = String.format("%1$10s", String.format("%.2f", event.getTime()));
 		String formattedEvent = String.format("%1$-10s", event);
-		String formattedId = String.format("%1$10s", "");
-		String formattedFast = String.format("%1$10s", "");
-		String formattedSlow = String.format("%1$10s", "");
-		String formattedIdleTime = String.format("%1$10s", "");
-		String formattedQueueTime = String.format("%1$10s", "");
-		String formattedQueueSize = String.format("%1$10s", "");
-		String formattedRejected = String.format("%1$10s", "");
+		String formattedId = "";
+		String formattedFast = "";
+		String formattedSlow = "";
+		String formattedIdleTime = "";
+		String formattedQueueTime = "";
+		String formattedQueueSize = "";
+		String formattedRejected = "";
 
 		if (event instanceof StartEvent) {
-			printStartSummary();
+			printStartSummary(carState);
 			sb.append("----------------------------------------\n");
 			formatter.format("%1$10s %2$10s %3$10s %4$10s %5$10s %6$10s %7$10s %8$10s %9$10s\n", "Time", "Event", "Id",
 					"Fast", "Slow", "IdleTime", "QueueTime", "QueueTime", "QueueSize", "Rejected");
@@ -68,16 +77,15 @@ public class CarWashView extends SimView {
 
 		if (event instanceof StopEvent) {
 			sb.append("\n----------------------------------------\n");
-			printEndSummary();
+			printEndSummary(carState);
 		}
 
 		System.out.println(sb.toString());
 	}
 
-	private void printStartSummary() {
+	private void printStartSummary(CarWashState state) {
 		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
-		CarWashState state = (CarWashState) super.getSimState();
 
 		formatter.format(
 				"Fast machines: %1$d\n" + "Slow machines: %2$d\n" + "Fast distribution: %3$s\n"
@@ -85,14 +93,11 @@ public class CarWashView extends SimView {
 						+ "seed = %6$d\n" + "Max Queue size: %7$d\n",
 				state.getFastFree(), state.getSlowFree(), state.getFastDistribution(), state.getSlowDistribution(),
 				carFactory.getLambda(), seed, state.getMaxQueueSize());
-
-		System.out.println(sb.toString());
 	}
 
-	private void printEndSummary() {
+	private void printEndSummary(CarWashState state) {
 		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
-		CarWashState state = (CarWashState) super.getSimState();
 
 		formatter.format(
 				"Total idle machine time: %1$.2f\n" + "Total queueing time: %2$.2f\n" + "Mean queueing time: %3$.2f\n"

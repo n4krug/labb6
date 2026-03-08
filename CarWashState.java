@@ -4,6 +4,10 @@ import java.util.LinkedList;
 
 public class CarWashState extends SimState {
 
+	public enum WashType {
+		FAST, SLOW
+	}
+
 	private int fastFree, slowFree;
 	private int rejected = 0;
 	private final int maxQueueSize;
@@ -12,10 +16,25 @@ public class CarWashState extends SimState {
 	private double queueTime = 0;
 	private final LinkedList<Integer> carQueue = new LinkedList<>();
 
+	/**
+	 * Creates a CarWashState
+	 * 
+	 * @param queue        a {@link EventQueue} for the simulation events
+	 * @param factory      {@link CarFactory} to spawn cars ({@link CarArriveEvent})
+	 * @param numFast      number of fast machines available
+	 * @param numSlow      number of slow machines available
+	 * @param maxQueueSize the maximum number of cars that can queue
+	 * @param fastWashTime {@link UniformRandomStream} for distribution of fast wash
+	 *                     times
+	 * @param slowWashTime {@link UniformRandomStream} for distribution of slow wash
+	 *                     times
+	 * @param maxRunTime   maximum time to simulate (creates stop event for given
+	 *                     time)
+	 */
 	public CarWashState(EventQueue queue, CarFactory factory, int numFast, int numSlow, int maxQueueSize,
 			UniformRandomStream fastWashTime, UniformRandomStream slowWashTime, double maxRunTime) {
 		super(queue, maxRunTime);
-		
+
 		fastFree = numFast;
 		slowFree = numSlow;
 
@@ -27,17 +46,19 @@ public class CarWashState extends SimState {
 	}
 
 	/**
-	 * Updates idle and queue time and triggers super.eventComplete(double)
+	 * Updates idle and queue time and triggers super.eventStarted(double)
+	 * 
+	 * @param time
 	 */
 	public void eventStarted(double time) {
 		if (getCarQueueSize() > 0) {
-			addQueueTime((time - getTime()) * getCarQueueSize() );
+			addQueueTime((time - getTime()) * getCarQueueSize());
 		}
 
 		if (fastFree > 0 || slowFree > 0) {
 			addIdleTime((time - getTime()) * (getFastFree() + getSlowFree()));
 		}
-		
+
 		super.eventStarted(time);
 	}
 
@@ -51,6 +72,8 @@ public class CarWashState extends SimState {
 
 	/**
 	 * Creates a leave event for next car in queue if space exists in a washer
+	 * 
+	 * @param time
 	 * 
 	 * @return false if washers where full
 	 */
@@ -68,7 +91,7 @@ public class CarWashState extends SimState {
 		} else {
 			return false;
 		}
-		
+
 		leaveTime += time;
 
 		int id = carQueue.poll();
@@ -91,7 +114,7 @@ public class CarWashState extends SimState {
 			return;
 		}
 		carQueue.add(id);
-		
+
 		enterWasher(time); // Try putting first car in washer (does nothing if no free washer)
 	}
 
@@ -99,9 +122,9 @@ public class CarWashState extends SimState {
 	 * Triggered by CarLeaveEvent to mark wash as free for next car. Starts washing
 	 * car if one is cueing.
 	 * 
-	 * @param type Type of the wash (FAST/SLOW)
+	 * @param type Type of the wash ({@link WashType.FAST}/{@link WashType.SLOW})
 	 */
-	public void addFree(WashType type, double time) {
+	public void carLeft(WashType type, double time) {
 		if (type == WashType.FAST) {
 			fastFree++;
 		} else if (type == WashType.SLOW) {
@@ -113,6 +136,11 @@ public class CarWashState extends SimState {
 		}
 	}
 
+	/**
+	 * Reduces number of available washers by one based on {@link WashType}
+	 * 
+	 * @param type Type of the wash ({@link WashType.FAST}/{@link WashType.SLOW})
+	 */
 	private void reduceFree(WashType type) {
 		if (type == WashType.FAST) {
 			fastFree--;
@@ -133,7 +161,10 @@ public class CarWashState extends SimState {
 		rejected++;
 	}
 
-	// Getters
+	/*
+	 * GETTERS
+	 */
+
 	public int getCarQueueSize() {
 		return carQueue.size();
 	}
@@ -157,32 +188,16 @@ public class CarWashState extends SimState {
 	public int getRejected() {
 		return rejected;
 	}
-	
+
 	public String getSlowDistribution() {
 		return slowRandom.toString();
 	}
-	
+
 	public String getFastDistribution() {
 		return fastRandom.toString();
 	}
-	
+
 	public int getMaxQueueSize() {
 		return maxQueueSize;
-	}
-	
-	// Test main
-	public static void main(String[] args) {
-		
-		EventQueue queue = new EventQueue();
-		
-		CarFactory factory = new CarFactory(15, new ExponentialRandomStream(2, 1234));
-		
-		CarWashState state = new CarWashState(queue, factory, 2, 2, 5, new UniformRandomStream(2.8,4.6,1234), new UniformRandomStream(3.5,6.7,1234), 15.0);
-	
-		CarWashView view = new CarWashView(state, 1234, factory);
-		
-		Simulator test = new Simulator(state, view);
-		
-		test.run();
 	}
 }

@@ -6,15 +6,10 @@ import java.util.Observer;
 
 public class SimView implements Observer{
 	
-	private SimState simState;
 	private StringBuilder sb;
 	private Formatter formatter;
 	
-	public SimView(SimState simState) {
-		
-		this.simState = simState;
-		
-		this.simState.addObserver(this);
+	public SimView() {
 		
 		sb = new StringBuilder("");
 		formatter = new Formatter(sb);
@@ -23,6 +18,12 @@ public class SimView implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
+
+		if (! (o instanceof SimState)) {
+			return;
+		}
+		
+		SimState simState = (SimState) o;
 		
 		Event event = simState.getEventQueue().peek();
 		
@@ -43,10 +44,6 @@ public class SimView implements Observer{
 		
 		System.out.println(sb.toString());
 		
-	}
-	
-	protected SimState getSimState() {
-		return simState;
 	}
 	
 	protected StringBuilder getStringBuilder() {

@@ -2,6 +2,10 @@ package labb6;
 
 public class StopEvent extends Event {
 
+	/**
+	 * Creates a simple event that stops the simulation
+	 * @param time
+	 */
 	public StopEvent(double time) {
 		super(time);
 	}

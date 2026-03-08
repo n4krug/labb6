@@ -2,6 +2,10 @@ package labb6;
 
 public class StartEvent extends Event {
 
+	/**
+	 * Creates a simple event that marks the start of simulation
+	 * @param time
+	 */
 	public StartEvent(double time) {
 		super(time);
 	}

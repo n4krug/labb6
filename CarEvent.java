@@ -1,5 +1,8 @@
 package labb6;
 
+/**
+ * Wrapper around CarEvents to simplify {@link CarWashView}
+ */
 public abstract class CarEvent extends Event {
 
 	private final int id;
