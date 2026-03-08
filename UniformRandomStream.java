@@ -4,7 +4,7 @@ package labb6;
 import java.util.Random;
 
 
-public class UniformRandomStream {
+public class UniformRandomStream extends RandomStream {
 
 	private Random rand;
 	private double lower, width;
@@ -23,6 +23,10 @@ public class UniformRandomStream {
 	
 	public double next() {
 	    return lower+rand.nextDouble()*width;
+	}
+
+	public String toString() {
+		return String.format("(%.1f, %.1f)", lower, lower + width);
 	}
 }
 

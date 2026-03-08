@@ -158,6 +158,18 @@ public class CarWashState extends SimState {
 		return rejected;
 	}
 	
+	public String getSlowDistribution() {
+		return slowRandom.toString();
+	}
+	
+	public String getFastDistribution() {
+		return fastRandom.toString();
+	}
+	
+	public int getMaxQueueSize() {
+		return maxQueueSize;
+	}
+	
 	// Test main
 	public static void main(String[] args) {
 		
@@ -167,15 +179,10 @@ public class CarWashState extends SimState {
 		
 		CarWashState state = new CarWashState(queue, factory, 2, 2, 5, new UniformRandomStream(2.8,4.6,1234), new UniformRandomStream(3.5,6.7,1234), 15.0);
 	
-		CarWashView view = new CarWashView(state);
+		CarWashView view = new CarWashView(state, 1234, factory);
 		
 		Simulator test = new Simulator(state, view);
 		
 		test.run();
-		
-		System.out.println(state.getQueueTime());
-		System.out.println(state.getIdleTime());
-		System.out.println(state.getCarQueueSize());
-		System.out.println(state.getRejected());
 	}
 }

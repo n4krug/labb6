@@ -3,7 +3,7 @@ package labb6;
 
 import java.util.Random;
 
-public class ExponentialRandomStream {
+public class ExponentialRandomStream extends RandomStream {
 
 	private Random rand;
 	private double lambda;
@@ -20,5 +20,9 @@ public class ExponentialRandomStream {
 
 	public double next() {
 		return -Math.log(rand.nextDouble()) / lambda;
+	}
+
+	public String toString() {
+		return String.format("%.1f", lambda);
 	}
 }

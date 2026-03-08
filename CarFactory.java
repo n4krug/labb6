@@ -30,5 +30,9 @@ public class CarFactory {
 			id++;
 		}
 	}
+	
+	public String getLambda() {
+		return random.toString();
+	}
 
 }
