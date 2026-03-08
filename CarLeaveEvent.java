@@ -1,20 +1,19 @@
 package labb6;
 
-public class CarLeaveEvent extends Event {
+/**
+ * Event run when 
+ */
+public class CarLeaveEvent extends CarEvent {
 
-	final private int id;
 	final private CarWashState.WashType type;
 	
 	public CarLeaveEvent(double time, int id, CarWashState.WashType type) {
-		super(time);
-		this.id = id;
+		super(time, id);
 		this.type = type;
 	}
 
 	@Override
 	public void runEvent(SimState state) {
-		// TODO Auto-generated method stub
-	
 		if (state instanceof CarWashState washState) {
 			washState.addFree(type, getTime());
 		}
@@ -24,5 +23,4 @@ public class CarLeaveEvent extends Event {
 	public String toString() {
 		return "Leave";
 	}
-
 }
