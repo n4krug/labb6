@@ -1,21 +1,28 @@
-package labb6;
+package labb6.CarWash;
 
 import java.util.Formatter;
 import java.util.Observable;
+
+import labb6.CarWash.event.CarEvent;
+import labb6.Generic.SimView;
+import labb6.Generic.event.Event;
+import labb6.Generic.event.StartEvent;
+import labb6.Generic.event.StopEvent;
 
 public class CarWashView extends SimView {
 
 	private final int seed;
 	private final CarFactory carFactory;
-	
+
 	private int lastCar;
 
 	/**
-	 * Crates a view that monitors and logs events and status for Car Wash simulation
+	 * Crates a view that monitors and logs events and status for Car Wash
+	 * simulation
 	 * 
-	 * @param carState		{@link CarWashState} for the viewer to observe
-	 * @param seed			the seed used in random streams
-	 * @param carFactory	{@link CarFactory} used to get lambda for output
+	 * @param carState   {@link CarWashState} for the viewer to observe
+	 * @param seed       the seed used in random streams
+	 * @param carFactory {@link CarFactory} used to get lambda for output
 	 */
 	public CarWashView(int seed, CarFactory carFactory) {
 		super();
@@ -24,14 +31,15 @@ public class CarWashView extends SimView {
 		this.carFactory = carFactory;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void update(Observable o, Object arg) {
 
-		if (! (o instanceof CarWashState)) {
+		if (!(o instanceof CarWashState)) {
 			return;
 		}
 		CarWashState carState = (CarWashState) o;
-		
+
 		Event event = carState.getEventQueue().peek();
 		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
@@ -71,9 +79,9 @@ public class CarWashView extends SimView {
 
 		}
 
-		formatter.format("%1$10s %2$10s %3$10s %4$10s %5$10s %6$10s %7$10s %8$10s %9$10s", formattedTime, formattedEvent, formattedId,
-				formattedFast, formattedSlow, formattedIdleTime, formattedQueueTime, formattedQueueSize,
-				formattedRejected);
+		formatter.format("%1$10s %2$10s %3$10s %4$10s %5$10s %6$10s %7$10s %8$10s %9$10s", formattedTime,
+				formattedEvent, formattedId, formattedFast, formattedSlow, formattedIdleTime, formattedQueueTime,
+				formattedQueueSize, formattedRejected);
 
 		if (event instanceof StopEvent) {
 			sb.append("\n----------------------------------------\n");
@@ -84,7 +92,6 @@ public class CarWashView extends SimView {
 	}
 
 	private void printStartSummary(CarWashState state) {
-		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
 
 		formatter.format(
@@ -96,7 +103,6 @@ public class CarWashView extends SimView {
 	}
 
 	private void printEndSummary(CarWashState state) {
-		StringBuilder sb = super.getStringBuilder();
 		Formatter formatter = super.getFormatter();
 
 		formatter.format(

@@ -1,9 +1,10 @@
-package labb6;
+package labb6.Generic;
+
+import labb6.Generic.event.Event;
 
 public class Simulator {
 
 	private final SimState state;
-	private final SimView view;
 	
 	/**
 	 * Initiates simulator with state and view. Also binds view as a observer to state
@@ -13,7 +14,6 @@ public class Simulator {
 	 */
 	public Simulator(SimState state, SimView view) {
 		this.state = state;
-		this.view = view;
 		
 		state.addObserver(view);
 	}

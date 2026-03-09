@@ -1,4 +1,8 @@
-package labb6;
+package labb6.CarWash;
+
+import labb6.CarWash.event.CarArriveEvent;
+import labb6.Generic.EventQueue;
+import labb6.Generic.random.ExponentialRandomStream;
 
 /**
  * Produces {@link CarArriveEvent} from time = 0 to time = maxTime

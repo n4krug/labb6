@@ -1,10 +1,17 @@
 package labb6;
 
+import labb6.CarWash.CarFactory;
+import labb6.CarWash.CarWashState;
+import labb6.CarWash.CarWashView;
+import labb6.Generic.EventQueue;
+import labb6.Generic.Simulator;
+import labb6.Generic.random.ExponentialRandomStream;
+import labb6.Generic.random.UniformRandomStream;
 
 /**
  * Simple class for testing stuff during development
  */
-public class Test {
+public class Main {
 	
 	public static void main(String[] args) {
 		EventQueue queue = new EventQueue();

@@ -1,4 +1,6 @@
-package labb6;
+package labb6.Generic.event;
+
+import labb6.Generic.SimState;
 
 public class StopEvent extends Event {
 

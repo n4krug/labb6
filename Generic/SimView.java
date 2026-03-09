@@ -1,9 +1,14 @@
-package labb6;
+package labb6.Generic;
 
 import java.util.Formatter;
 import java.util.Observable;
 import java.util.Observer;
 
+import labb6.Generic.event.Event;
+import labb6.Generic.event.StartEvent;
+import labb6.Generic.event.StopEvent;
+
+@SuppressWarnings("deprecation")
 public class SimView implements Observer{
 	
 	private StringBuilder sb;

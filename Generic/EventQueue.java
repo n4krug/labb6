@@ -1,7 +1,10 @@
-package labb6;
+package labb6.Generic;
 
 import java.util.PriorityQueue;
 
+import labb6.Generic.event.Event;
+
+@SuppressWarnings("serial")
 public class EventQueue extends PriorityQueue<Event> {
 
 	public String toString() {

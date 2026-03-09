@@ -1,4 +1,7 @@
-package labb6;
+package labb6.CarWash.event;
+
+import labb6.CarWash.CarWashState;
+import labb6.Generic.SimState;
 
 /**
  * Event run when 
@@ -13,7 +16,7 @@ public class CarLeaveEvent extends CarEvent {
 	}
 
 	@Override
-	public void runEvent(SimState state) {
+	protected void runEvent(SimState state) {
 		if (state instanceof CarWashState washState) {
 			washState.carLeft(type, getTime());
 		}

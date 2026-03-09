@@ -1,4 +1,4 @@
-package labb6;
+package labb6.Generic.random;
 
 public abstract class RandomStream {
 

@@ -1,7 +1,11 @@
-package labb6;
+package labb6.Generic;
 
 import java.util.Observable;
 
+import labb6.Generic.event.StartEvent;
+import labb6.Generic.event.StopEvent;
+
+@SuppressWarnings("deprecation")
 public class SimState extends Observable {
 
 	private double currentTime = 0.0;
@@ -28,11 +32,11 @@ public class SimState extends Observable {
 		isRunning = state;
 	}
 
-	public double getTime() {
+	protected double getTime() {
 		return currentTime;
 	}
 
-	public boolean getIsRunning() {
+	protected boolean getIsRunning() {
 		return isRunning;
 	}
 

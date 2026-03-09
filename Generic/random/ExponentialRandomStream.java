@@ -1,5 +1,5 @@
 
-package labb6;
+package labb6.Generic.random;
 
 import java.util.Random;
 

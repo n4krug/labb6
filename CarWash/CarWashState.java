@@ -1,6 +1,12 @@
-package labb6;
+package labb6.CarWash;
 
 import java.util.LinkedList;
+
+import labb6.CarWash.event.CarArriveEvent;
+import labb6.CarWash.event.CarLeaveEvent;
+import labb6.Generic.EventQueue;
+import labb6.Generic.SimState;
+import labb6.Generic.random.UniformRandomStream;
 
 public class CarWashState extends SimState {
 
@@ -165,39 +171,39 @@ public class CarWashState extends SimState {
 	 * GETTERS
 	 */
 
-	public int getCarQueueSize() {
+	protected int getCarQueueSize() {
 		return carQueue.size();
 	}
 
-	public int getFastFree() {
+	protected int getFastFree() {
 		return fastFree;
 	}
 
-	public int getSlowFree() {
+	protected int getSlowFree() {
 		return slowFree;
 	}
 
-	public double getIdleTime() {
+	protected double getIdleTime() {
 		return idleTime;
 	}
 
-	public double getQueueTime() {
+	protected double getQueueTime() {
 		return queueTime;
 	}
 
-	public int getRejected() {
+	protected int getRejected() {
 		return rejected;
 	}
 
-	public String getSlowDistribution() {
+	protected String getSlowDistribution() {
 		return slowRandom.toString();
 	}
 
-	public String getFastDistribution() {
+	protected String getFastDistribution() {
 		return fastRandom.toString();
 	}
 
-	public int getMaxQueueSize() {
+	protected int getMaxQueueSize() {
 		return maxQueueSize;
 	}
 }

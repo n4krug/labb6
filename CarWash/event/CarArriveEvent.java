@@ -1,4 +1,7 @@
-package labb6;
+package labb6.CarWash.event;
+
+import labb6.CarWash.CarWashState;
+import labb6.Generic.SimState;
 
 /**
  * Event triggered when a car arrives to the carwash
@@ -10,7 +13,7 @@ public class CarArriveEvent extends CarEvent {
 	}
 
 	@Override
-	public void runEvent(SimState state) {
+	protected void runEvent(SimState state) {
 		if (state instanceof CarWashState washState) {
 			washState.carArrived(getId(), getTime());
 		}

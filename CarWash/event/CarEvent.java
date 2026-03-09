@@ -1,4 +1,7 @@
-package labb6;
+package labb6.CarWash.event;
+
+import labb6.CarWash.CarWashView;
+import labb6.Generic.event.Event;
 
 /**
  * Wrapper around CarEvents to simplify {@link CarWashView}
