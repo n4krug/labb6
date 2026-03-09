@@ -41,8 +41,8 @@ public class CarWashView extends SimView {
 
 		sb.replace(0, sb.length(), "");
 
-		String formattedTime = String.format("%1$10s", String.format("%.2f", event.getTime()));
-		String formattedEvent = String.format("%1$-10s", event);
+		String formattedTime = String.format("%.2f", event.getTime());
+		String formattedEvent = event.toString();
 		String formattedId = "";
 		String formattedFast = "";
 		String formattedSlow = "";

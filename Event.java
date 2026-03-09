@@ -45,7 +45,7 @@ public abstract class Event implements Comparable<Event> {
 	}
 
 	/**
-	 * Returns the event name
+	 * @return the Event name
 	 */
 	public abstract String toString();
 
