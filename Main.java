@@ -1,5 +1,6 @@
 package labb6;
 
+
 import labb6.CarWash.CarFactory;
 import labb6.CarWash.CarWashState;
 import labb6.CarWash.CarWashView;
@@ -10,6 +11,8 @@ import labb6.Generic.random.UniformRandomStream;
 
 /**
  * Simple class for testing stuff during development
+ * 
+ * @author Gustav, Ossian
  */
 public class Main {
 	
